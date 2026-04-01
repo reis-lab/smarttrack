@@ -1,28 +1,18 @@
 <?php
-// ====================== SMARTTRACK config.php (ROBUST) ======================
+$host = "dpg-d76ki1n5r7bs73c8ncqg-a";
+$db   = "smarttrack_7xju";
+$user = "smarttrack_7xju_use";
+$pass = "graqwFNS1QcIfJHOVByOWet1IWxacPan";
+$port = "5432";
 
-$host     = 'sql100.byetcluster.com';
-$db_user  = 'ezyro_41552429';
-$db_pass  = '068e9dc4181';
-$db_name  = 'ezyro_41552429_smarttrack';
-
-
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
-$conn = new mysqli($host, $db_user, $db_pass, $db_name);
-
-if ($conn->connect_error) {
-    http_response_code(500);
+try {
+    $conn = new PDO("pgsql:host=$host;port=$port;dbname=$db", $user, $pass);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
     echo json_encode([
         "success" => false,
-        "error" => "DB Connection Failed"
+        "error" => "DB connection failed"
     ]);
     exit;
 }
-
-$conn->set_charset("utf8mb4");
-
-// Auto set JSON header for all API files
-header("Content-Type: application/json; charset=utf-8");
 ?>
