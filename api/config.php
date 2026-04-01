@@ -1,7 +1,7 @@
 <?php
-$host = "dpg-d76ki1n5r7bs73c8ncqg-a";
+$host = "dpg-d76ki1n5r7bs73c8ncqg-a.ohio-postgres.render.com";
 $db   = "smarttrack_7xju";
-$user = "smarttrack_7xju_use";
+$user = "smarttrack_7xju_user";
 $pass = "graqwFNS1QcIfJHOVByOWet1IWxacPan";
 $port = "5432";
 
