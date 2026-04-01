@@ -1,29 +1,24 @@
 <?php
-header('Content-Type: application/json');
 require 'config.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-$username = $data['username'] ?? '';
-$password = $data['password'] ?? '';
+$username = $data['username'];
+$password = $data['password'];
 
-$res = $conn->query("SELECT * FROM users WHERE email='$username'");
+$stmt = $conn->prepare("SELECT * FROM users WHERE username = :username");
+$stmt->execute(['username' => $username]);
 
-if ($res->num_rows == 0) {
-    echo json_encode(["success"=>false, "message"=>"User not found"]);
-    exit;
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if ($user && password_verify($password, $user['password'])) {
+    echo json_encode([
+        "success" => true,
+        "user" => $user
+    ]);
+} else {
+    echo json_encode([
+        "success" => false,
+        "message" => "Invalid credentials"
+    ]);
 }
-
-$user = $res->fetch_assoc();
-
-if (!password_verify($password, $user['password'])) {
-    echo json_encode(["success"=>false, "message"=>"Wrong password"]);
-    exit;
-}
-
-// ✅ RETURN DATA
-echo json_encode([
-    "success" => true,
-    "schoolName" => $user['school_name'],
-    "adminName" => $user['admin_name']
-]);
